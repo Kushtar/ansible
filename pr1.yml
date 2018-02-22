@@ -6,13 +6,12 @@
   gather_facts: yes
   tasks:
     - name: install list of packages
-      when: ( ansible_distribution == "CentOS" and ansible_distribution_major_version== "")
+      when: ( ansible_distribution == "CentOS" and ansible_distribution_major_version== "6")
       command: "yum update -y"
-      notify:
-      - ifupdated
-      handler:
-      - name: ifupdated
-        command: "reboot"
+      notify: ifupdated
+  handler:
+    - name: ifupdated
+      command: "reboot"
 
 
     - name: add users 
