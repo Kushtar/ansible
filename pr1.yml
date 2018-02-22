@@ -1,0 +1,27 @@
+--- # This installs LAMP - httpd, mariadb and php on centos 7
+- hosts: test
+  become: yes
+  become_method: sudo
+  connection: ssh
+  gather_facts: yes
+  tasks:
+    - name: install list of packages
+      when: ( ansible_distribution == "CentOS" and ansible_distribution_major_version== "")
+      command: "yum update -y"
+      notify:
+      - ifupdated
+      handler:
+      - name: ifupdated
+        command: "reboot"
+
+
+    - name: add users 
+      user: 
+        name: bob 
+        state : present
+      
+    - name: install wget 
+      when: ( ansible_distribution == "Debian")
+      package:
+        pkg: wget  
+        state: latest
