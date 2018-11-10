@@ -1,5 +1,5 @@
 --- # Build an Apache Web server
-- hosts: apacheweb
+- hosts: appserver
   user: test
   sudo: yes
   connection: ssh
@@ -16,20 +16,16 @@
     - name: Create the web server directory
       file: path={{ apache_dir }} state=directory mode=644
     - name: Copy the Apache configuration file to remote host
-      copy: src=files/httpd.conf.template dest=/etc/httpd/conf/httpd.conf owner=root mode=644
-    - name: Create the VHOST.D Directory on the romte host
-      file: path=/etc/httpd/vhost.d state=directory mode=755
+      copy: src=files/servers.conf dest=/etc/httpd/conf.d/servers.conf owner=root group=root mode=644
     - name: Copy and untar the source for the site
-      unarchive: src=files/sitecode.tar.gz dest={{ apache_dir }}
-    - name: Copy the default vhost configaration file
-      copy: src=files/default.conf.template dest=/etc/httpd/vhost.d/default.conf owner=root group=root mode=644
+      unarchive: src=files/index.tar.gz dest={{ apache_dir }}
       notify:
         - StartHttpd
         - TestHttpd
         - DisplayResult
   handlers: 
     - name: StartHttpd
-      service: name={{ apache_pkg}} state=started
+      service: name={{ apache_pkg }} state=started
     - name: TestHttpd
       shell: curl http://{{ apache_fqdn }}
       register: result
