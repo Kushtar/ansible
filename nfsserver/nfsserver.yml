@@ -1,0 +1,42 @@
+--- # NFS server playbook
+- hosts: apacheweb
+  user: test
+  sudo: yes
+  connection: ssh
+  gather_facts: yes
+  vars:
+    distribution: RedHat
+    nfsutils_pkg: nfs-utils
+    nfslibs_pkg: nfs-utils-lib
+    nfsserver_service: nfs-server
+    rpcbind_service: rpcbind
+    export_path: /var/share
+  tasks:
+  - name: Install the NFS server and utilities
+    yum: pkg=nfs-utils state=latest
+  - name: Copy the export file to remote server
+    copy: src=files/exports dest=/etc/exports owner=root group=root mode=644
+  - name: Start the RPC Bind service
+    service: name=rpcbind state=started
+  - name: Create Server export Directory
+    file: path=/var/share state=directory mode=777 owner=root group=root
+  - name: Start the NFS service 
+    service: name=nfs-server state=restarted
+  - name: Install the NFS Client and utilities
+    yum: pkg=nfs-utils state=latest
+    delegate_to: appserver
+  - name: Start the RPC Bind service in Client
+    service: name=rpcbind state=started
+    delegate_to: appserver
+  - name: Start the NFS service in Client
+    service: name=nfs-server state=restarted
+    delegate_to: appserver
+  - name: Create Client Mount Directory
+    file: path=/mnt/remote state=directory mode=755
+    delegate_to: appserver
+  - name: Mount the filesystem on the Client from the NFS server
+    shell: mount -t nfs apacheweb:/var/share /mnt/remote
+    register: result
+    delegate_to: appserver
+  - name: Show the client mount result
+    debug: var=result
