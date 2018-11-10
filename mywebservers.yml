@@ -17,8 +17,8 @@
       file: path=/var/www/sample state=directory mode=644
     - name: Copy the Apache configuration file to remote host
       copy: src=files/servers.conf dest=/etc/httpd/conf.d/servers.conf owner=root mode=644
-    - name: Copy the indexd file to remote host
-      copy: src=files/index.html  dest=/var/www/sample/index.html owner=root mode=644
+    - name: Copy and untar the source for the site
+      unarchive: src=files/index.tar.gz dest=/var/www/sample
     - name: Start the Web server
       service: name=httpd state=started
     - name: Test the web server
