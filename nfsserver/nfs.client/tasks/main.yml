@@ -4,5 +4,3 @@
   - InstallClientPackages
   - CreateClientMount
   - ClientMountServerResources
-  - TestServerAvailability
-
