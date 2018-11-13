@@ -1,5 +1,5 @@
---- #master playbook for Role based NFS server deployment
-- hosts: apacheweb
+--- #master playbook for Role baed Apache web deplayment
+- hosts: appserver
   user: test
   sudo: yes
   connection: ssh
@@ -7,7 +7,7 @@
   - name: How long the ROLE took to run
     raw: date > /home/test/duration.log
   roles: 
-  - nfs.server
+  - nfs.client
   post_tasks:
   - name: How long the ROLE took to run
     raw: date >> /home/test/duration.log
