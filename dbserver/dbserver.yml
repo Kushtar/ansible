@@ -33,7 +33,7 @@
   - name: Add a backup CRON job to run every day at midnight
     cron: name="DBBackup" minute="0" hour="0" job="mysqldump -u root -ppassword123 --database mymariadb > dbbkup.sql"
   - name: Run a Quick SQL Command to be sure everything was created and is working
-    shell: mysql -u root -ppassword123 -e 'SHOW DATABASES';
+    shell: mysql -u root -ppassword123 -e 'SHOW DATABASES;'
     register: mysqlresult
   - debug: var=mysqlresult
 
