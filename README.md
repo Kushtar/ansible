@@ -6,7 +6,7 @@ All three playbooks do the same tasks.
 For example: In project webserver, we have mywebservers.yml mywebserver.optimized.yml webserverrole.yml.
 mywebservers.yml is the straightforward playbook derived from mywebserver.txt outline.
 mywebserver.optimized.yml is optimized virsion of the previous playbook. Changes includes using of variables and handlers.
-webserverrole.ym is the role based playbook which include all folders in the redhat.apachewebser folder hiararchy.
+webserverrole.ym is the role based playbook which include all folders in the redhat.apachewebser folder hiararchy. running webserverrole.ym is enough to trigger the roles.
 This logical architecture is enforced on other projects as well.
 
 These project consists of two separate playbooks: mywebserver.optimized.yml and webserverrole.yml. 
